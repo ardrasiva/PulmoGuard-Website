@@ -1,0 +1,113 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pneumonia Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
+<spline-viewer url="https://prod.spline.design/N7nd1pd3ZeLWpjKq/scene.splinecode"></spline-viewer>
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            <h2 class="text-center text-primary mb-4">Pneumonia Detection</h2>
+            <form action="/predict" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Chest X-ray Image</label>
+                    <input class="form-control" type="file" name="image" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Detect Pneumonia</button>
+                </div>
+            </form>
+
+            {% if prediction %}
+            <div class="alert alert-info mt-4" role="alert">
+                <strong>Prediction:</strong> {{ prediction }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Pneumonia Detector</title>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      font-family: 'Arial Black', sans-serif;
+    }
+    .container-custom {
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .left-side {
+      flex: 1;
+      height: 100%;
+    }
+    .right-side {
+      flex: 1;
+      background-color: #e1c4ff;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+    h1 {
+      color: black;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    .btn-custom {
+      margin-top: 1rem;
+      padding: 1rem;
+      font-weight: bold;
+      box-shadow: 2px 2px 5px #ccc;
+    }
+    .btn-upload {
+      background-color: white;
+      color: black;
+    }
+    .btn-checker {
+      background-color: white;
+      color: #000;
+    }
+    .btn-checker i,
+    .btn-upload i {
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-custom">
+    <div class="left-side">
+      <!-- Replace URL below with your actual Spline scene -->
+     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
+<spline-viewer url="https://prod.spline.design/N7nd1pd3ZeLWpjKq/scene.splinecode"></spline-viewer>
+    </div>
+
+    <div class="right-side">
+      <h1>AI -<br>POWERED<br>PNEUMONIA<br>DETECTOR.</h1>
+      <a href="upload.html" class="btn btn-upload btn-custom">
+        <i class="bi bi-upload"></i> Upload X-ray
+      </a>
+      <a href="#symptom-checker" class="btn btn-checker btn-custom">
+        <i class="bi bi-exclamation-triangle"></i> Symptom Checker
+      </a>
+    </div>
+  </div>
+
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</body>
+</html>
