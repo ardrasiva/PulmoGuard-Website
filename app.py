@@ -7,37 +7,40 @@ import os
 app = Flask(__name__)
 
 # Load TFLite model and allocate tensors
-interpreter = tf.lite.Interpreter(model_path="pneumonia_vgg19_classifier.tflite")  # Change to your model name
+interpreter = tf.lite.Interpreter(model_path="pneumonia_vgg19_classifier.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output tensor details
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
-labels = ['NORMAL', 'PNEUMONIA']  # Adjust if your labels are different
+labels = ['NORMAL', 'PNEUMONIA']
 
 def preprocess_image(image):
-    img = image.resize((128, 128))  # Match model input size
+    img = image.resize((128, 128))  # Resize as per model requirement
     img_array = np.array(img).astype('float32') / 255.0
-
-    # Check if input is grayscale or RGB
-    if len(img_array.shape) == 2:
+    if len(img_array.shape) == 2:  # grayscale handling
         img_array = np.stack((img_array,) * 3, axis=-1)
-
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
-    print("Rendering index page")
     return render_template('index.html')
+
+@app.route('/upload')
+def upload():
+    return render_template('upload.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
-        return render_template('index.html', prediction="No file uploaded")
+        return render_template('upload.html', prediction="No image uploaded.")
 
     image_file = request.files['image']
+    if image_file.filename == '':
+        return render_template('upload.html', prediction="No image selected.")
+
     image = Image.open(image_file).convert('RGB')
     processed_image = preprocess_image(image)
 
@@ -48,7 +51,7 @@ def predict():
     predicted_index = int(np.argmax(output_data))
     result = labels[predicted_index]
 
-    return render_template('index.html', prediction=result)
+    return render_template('upload.html', prediction=result)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port = 5000)
