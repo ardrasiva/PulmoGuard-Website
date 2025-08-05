@@ -2,9 +2,16 @@ from flask import Flask, render_template, request
 from PIL import Image
 import numpy as np
 import tensorflow as tf
+from pymongo import MongoClient
 import os
 
 app = Flask(__name__)
+
+client = MongoClient("mongodb+srv://ardrasiva123:ardmongo1612@cluster0.wqlfkjh.mongodb.net/pulmoguard?retryWrites=true&w=majority")
+
+# Replace 'pulmoguard' with your database name
+db = client["pulmoguard"]
+results_collection = db["results"]
 
 # Load TFLite model and allocate tensors
 interpreter = tf.lite.Interpreter(model_path="pneumonia_vgg19_classifier.tflite")
@@ -32,6 +39,12 @@ def index():
 def upload():
     return render_template('upload.html')
 
+@app.route('/results')
+def show_results():
+    results = list(results_collection.find().sort("_id", -1).limit(10))
+    return render_template("results.html", results=results)
+1
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
@@ -50,6 +63,12 @@ def predict():
 
     predicted_index = int(np.argmax(output_data))
     result = labels[predicted_index]
+
+    results_collection.insert_one({
+    "filename": image_file.filename,
+    "result": result,
+    "confidence": float(output_data[0][predicted_index]),
+})
 
     return render_template('upload.html', prediction=result)
 

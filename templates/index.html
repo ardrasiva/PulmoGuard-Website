@@ -2,124 +2,162 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AI Pneumonia Detector</title>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+  <title>PulmoGuard – AI Pneumonia Detector</title>
 
-  
+  <!-- Spline 3D Viewer -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
   <style>
-    body {
+    * {
       margin: 0;
-      background: #111;
-      font-family: 'Arial Black', sans-serif;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .container-custom {
-      display: flex;
+
+    body, html {
+      height: 100%;
+      font-family: 'Nata Sans', sans-serif;
+      color: white;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    /* Background 3D animation */
+    spline-viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
       height: 100vh;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      z-index: 0;
     }
-    .left-side {
-      flex: 1;
-      height: 100%;
-    }
-    .heading{
-      font-family: 'Rubik Mono One', sans-serif;
-      color: rgb(0, 0, 0, 0.662);
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .right-side {
-      flex: 1;
-      font-family:'Bebas Neue', sans-serif;
-      background-color: #e1c4ff;
-      padding: 3rem;
+
+    /* Navbar */
+    .nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 100%;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      z-index: 10;
     }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 1rem;
+    }
+
+    .nav .btn {
+      padding: 0.6rem 1.2rem;
+      background: #2979ff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* Main Centered Content */
+    .content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0 20px;
+    }
+
     h1 {
-      color: black;
       font-size: 2.5rem;
-      font-weight: bold;
+      margin-bottom: 1rem;
     }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      font-weight: normal;
+    }
+
     .btn-custom {
-      margin-top: 1rem;
-      padding: 1rem;
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 1rem 2rem;
       font-weight: bold;
-      box-shadow: 2px 2px 5px #ccc;
-    }
-    .btn-upload {
       background-color: white;
       color: black;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
     }
-    .btn-checker {
-      background-color: white;
-      color: #000;
-    }
-    .btn-checker i,
-    .btn-upload i {
+
+    .btn-custom i {
       margin-right: 0.5rem;
     }
-    .text-center {
-      text-align: center;
-      font-size: xx-large;
-      margin-bottom: 5.5rem;
-    } 
-    .neumorphic{
-      background: #e0e5ec;border-radius: 20px;
-      box-shadow: 10px 10px 20px #a3b1c9, -10px -10px 20px #ffffff;
-    }
-    .neumorphic-inset {
-      background: #e0e5ec; border-radius: 20px;
-      box-shadow: inset 10px 10px 20px #a3b1c9, inset -10px -10px 20px #ffffff;
-    }
-    .neumorphic-button {
-  font-family: sans-serif;
-  background: #e0e5ec;
-  border: none;
-  border-radius: 20px;
-  padding: 15px 30px;
-  font-size: 16px;
-  color: #333;
+    .btn-custom-glass {
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 1rem 2rem;
+  font-weight: regular;
+  background: rgba(255, 255, 255, 0.1); /* translucent */
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1px;
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: inset 10px 10px 20px #fdfdfd,
-              inset -10px -10px 20px #aaa5a5;
-  
-  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(10px); /* Glass blur effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.neumorphic-button:hover {
-  box-shadow: inset 10px 10px 20px #a3b1c6,
-              inset -10px -10px 20px #ffffff;
+.btn-custom:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
 }
+
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .btn-custom { width: 100%; margin: 0.5rem 0; }
+      .nav { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
-  <div class="container-custom">
-    <div class="left-side">
-      <!-- Replace URL below with your actual Spline scene -->
-     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
-<spline-viewer url="https://prod.spline.design/N7nd1pd3ZeLWpjKq/scene.splinecode"></spline-viewer>
-    </div>
+  <div style="position: absolute; top: 40px; right: 50px;">
+  <a href="/results" class="btn neumorphic-button">Results</a>
+  </div>
+  <!-- 3D Background -->
+  <spline-viewer url="https://prod.spline.design/N7nd1pd3ZeLWpjKq/scene.splinecode"></spline-viewer>
 
-    <div class="right-side">
-      <h1 class="heading">PULMOGUARD</h1>
-      <h2>AI - POWERED PNEUMONIA<br>DETECTOR.</h2>
-      <a href="/upload" class="btn btn-upload btn-custom">
-  <i class="bi bi-upload"></i> Upload X-ray
-</a>
-      <a href="#symptom-checker" class="btn btn-checker btn-custom">
-        <i class="bi bi-exclamation-triangle"></i> Symptom Checker
-      </a>
+  <!-- Navbar -->
+  <div class="nav">
+    
+    <div>
+      <a href="#">Log In</a>
+      <a href="#">Sign Up</a>
+    </div>
+    
+      
     </div>
   </div>
 
-  <!-- Bootstrap Icons CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Centered Content -->
+  <div class="content">
+    <h1>PULMOGUARD</h1>
+    <h2>AI-Powered Pneumonia Detector</h2>
+    <a href="/upload" class="btn-custom-glass"><i class="bi bi-upload"></i>Upload X-ray</a>
+    <a href="#symptom-checker" class="btn-custom-glass"><i class="bi bi-heart-pulse"></i>Symptom Checker</a>
+  </div>
+
 </body>
 </html>
