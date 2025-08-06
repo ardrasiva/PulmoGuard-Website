@@ -4,11 +4,15 @@ import numpy as np
 import tensorflow as tf
 from pymongo import MongoClient
 import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-client = MongoClient("mongodb+srv://ardrasiva123:ardmongo1612@cluster0.wqlfkjh.mongodb.net/pulmoguard?retryWrites=true&w=majority")
+load_dotenv()
 
+# MongoDB connection
+MONGO_URI = os.getenv("MONGO_URI")
+client = MongoClient(MONGO_URI)
 # Replace 'pulmoguard' with your database name
 db = client["pulmoguard"]
 results_collection = db["results"]
