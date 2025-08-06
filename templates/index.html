@@ -123,6 +123,20 @@
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
 }
+.neumorphic-button {
+  background: #e0e0e0;
+  border-radius: 12px;
+  box-shadow:  8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+  color: #333;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.neumorphic-button:hover {
+  box-shadow:  4px 4px 8px #bebebe, -4px -4px 8px #ffffff;
+}
 
 
     @media (max-width: 768px) {
@@ -133,9 +147,9 @@
   </style>
 </head>
 <body>
-  <div style="position: absolute; top: 40px; right: 50px;">
-  <a href="/results" class="btn neumorphic-button">Results</a>
-  </div>
+  <div style="position: absolute; top: 40px; right: 50px; z-index: 20;">
+  <a href="/results" class="btn-custom-glass">Results</a>
+</div>
   <!-- 3D Background -->
   <spline-viewer url="https://prod.spline.design/N7nd1pd3ZeLWpjKq/scene.splinecode"></spline-viewer>
 

@@ -32,8 +32,20 @@ def preprocess_image(image):
     return img_array
 
 @app.route('/')
+def start():
+    return render_template('getStarted.html')
+
+@app.route('/home')
 def index():
     return render_template('index.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 @app.route('/upload')
 def upload():
